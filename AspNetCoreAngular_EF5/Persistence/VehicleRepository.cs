@@ -1,6 +1,7 @@
 ﻿using AspNetCoreAngular_EF5.Core;
 using AspNetCoreAngular_EF5.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AspNetCoreAngular_EF5.Persistence
@@ -35,6 +36,15 @@ namespace AspNetCoreAngular_EF5.Persistence
         public void RemoveVehicle(Vehicle vehicle)
         {
             this.context.Vehicles.Remove(vehicle);
+        }
+
+        public async Task<IEnumerable<Vehicle>> GetVehicles()
+        {
+            return await this.context.Vehicles
+                .Include(v => v.VehicleFeatures)
+                .ThenInclude(vf => vf.Feature)
+                .Include(v => v.Model)
+                .ThenInclude(m => m.Make).ToListAsync();
         }
     }
 }

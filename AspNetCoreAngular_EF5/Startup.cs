@@ -23,6 +23,7 @@ namespace AspNetCoreAngular_EF5
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper(typeof(Startup));
 

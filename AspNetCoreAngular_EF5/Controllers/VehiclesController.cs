@@ -3,6 +3,7 @@ using AspNetCoreAngular_EF5.Core;
 using AspNetCoreAngular_EF5.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AspNetCoreAngular_EF5.Controllers
@@ -85,6 +86,14 @@ namespace AspNetCoreAngular_EF5.Controllers
             var vehicleResource = this._mapper.Map<Vehicle, VehicleResource>(vehicle);
 
             return Ok(vehicleResource);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<VehicleResource>> GetVehicles()
+        {
+            var vehicles = await this._vehicleRepository.GetVehicles();
+
+            return this._mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleResource>>(vehicles);
         }
     }
 }
