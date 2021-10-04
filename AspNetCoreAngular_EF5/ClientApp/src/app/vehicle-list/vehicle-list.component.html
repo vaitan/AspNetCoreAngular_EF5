@@ -1,6 +1,16 @@
 <h1>Vehicles</h1>
 <a class="btn btn-md btn-primary" [routerLink]="['/vehicles/new']">New Vehicle</a>
 <p></p>
+<div class="well">
+  <div class="form-group">
+    <label for="make">Make</label>
+    <select id="make" class="form-control" [(ngModel)]="filter.makeId" (change)="onChangeFilter()">
+      <option value=""></option>
+      <option *ngFor="let m of makes" value="{{ m.id }}">{{ m.name }}</option>
+    </select>
+  </div>
+  <button class="btn btn-md btn-primary" (click)="onResetFilter()">Reset</button>
+</div>
 <table class="table">
   <thead>
     <tr>

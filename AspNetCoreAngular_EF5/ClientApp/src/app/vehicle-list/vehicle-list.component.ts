@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Vehicle } from '../models/vehicle';
+import { KeyValuePair, Vehicle } from '../models/vehicle';
 import { VehicleService } from '../services/vehicle.service';
 
 @Component({
@@ -9,13 +9,32 @@ import { VehicleService } from '../services/vehicle.service';
 })
 export class VehicleListComponent implements OnInit {
 
+  vehicles: Vehicle[];
+  makes: KeyValuePair[];
+  filter: any = {};
+
   constructor(private vehicleService: VehicleService) { }
 
-  vehicles: Vehicle[];
-
   ngOnInit() {
-    this.vehicleService.getVehicles().subscribe(res => {
+    this.vehicleService.getMakes().subscribe(makes => this.makes = makes);
+
+    this.populateVehicles();
+  }
+
+  private populateVehicles() {
+    this.vehicleService.getVehicles(this.filter).subscribe(res => {
       this.vehicles = res;
     });
+  }
+
+  onChangeFilter() {
+    this.filter.ModelId = 2;
+    this.populateVehicles();
+  }
+
+  onResetFilter() {
+    this.filter = {};
+
+    this.populateVehicles();
   }
 }

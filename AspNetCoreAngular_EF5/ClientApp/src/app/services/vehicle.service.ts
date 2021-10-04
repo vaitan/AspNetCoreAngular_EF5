@@ -7,6 +7,7 @@ import { SaveVehicle, Vehicle } from '../models/vehicle';
   providedIn: 'root'
 })
 export class VehicleService {
+  private readonly vehicleEndpoint = '/api/vehicles';
 
   constructor(private http: HttpClient) { }
 
@@ -23,27 +24,39 @@ export class VehicleService {
   }
 
   create(vehicle: SaveVehicle) {
-    return this.http.post<SaveVehicle>('/api/vehicles', vehicle)
+    return this.http.post<SaveVehicle>(this.vehicleEndpoint, vehicle)
       .pipe(map(res => res));
   }
 
   getVehicle(id: number) {
-    return this.http.get<any>('/api/vehicles/' + id)
+    return this.http.get<any>(this.vehicleEndpoint + '/' + id)
       .pipe(map(res => res));
   }
 
   update(id: number, vehicle: SaveVehicle) {
-    return this.http.put<SaveVehicle>('/api/vehicles/' + id, vehicle)
+    return this.http.put<SaveVehicle>(this.vehicleEndpoint + '/' + id, vehicle)
       .pipe(map(res => res));
   }
 
   delete(id: number) {
-    return this.http.delete<SaveVehicle>('/api/vehicles/' + id)
+    return this.http.delete<SaveVehicle>(this.vehicleEndpoint + '/' + id)
       .pipe(map(res => res));
   }
 
-  getVehicles() {
-    return this.http.get<Vehicle[]>('/api/vehicles')
+  getVehicles(filter: any) {
+    return this.http.get<Vehicle[]>(this.vehicleEndpoint + '?' + this.toQueryString(filter))
       .pipe(map(res => res));
+  }
+
+  private toQueryString(obj) {
+    var parts = [];
+
+    for (var property in obj) {
+      var value = obj[property];
+
+      parts.push(encodeURIComponent(property) + '=' + encodeURIComponent(value));
+    }
+
+    return parts.join('&');
   }
 }

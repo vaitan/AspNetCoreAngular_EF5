@@ -23,6 +23,7 @@ namespace AspNetCoreAngular_EF5.Mapping
 
 
             //API Resource to domain class
+            CreateMap<FilterResource, Filter>();
             CreateMap<SaveVehicleResource, Vehicle>()
                 .ForMember(v => v.Id, opt => opt.Ignore())
                 .ForMember(v => v.ContactName, opt => opt.MapFrom(vr => vr.Contact.Name))
