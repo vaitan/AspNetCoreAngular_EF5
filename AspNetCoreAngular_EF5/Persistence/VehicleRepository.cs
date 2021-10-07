@@ -1,8 +1,11 @@
 ﻿using AspNetCoreAngular_EF5.Core;
+using AspNetCoreAngular_EF5.Extensions;
 using AspNetCoreAngular_EF5.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace AspNetCoreAngular_EF5.Persistence
@@ -39,7 +42,7 @@ namespace AspNetCoreAngular_EF5.Persistence
             this.context.Vehicles.Remove(vehicle);
         }
 
-        public async Task<IEnumerable<Vehicle>> GetVehicles(Filter filter)
+        public async Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery filter)
         {
             var query = this.context.Vehicles
                 .Include(v => v.VehicleFeatures)
@@ -53,6 +56,19 @@ namespace AspNetCoreAngular_EF5.Persistence
 
             if (filter.ModelId.HasValue)
                 query = query.Where(v => v.Model.Id == filter.ModelId.Value);
+
+            //Sort
+            var sortQuery = new Dictionary<string, Expression<Func<Vehicle, object>>>()
+            {
+                ["make"] = v => v.Model.Make.Name,
+                ["model"] = v => v.Model.Name,
+                ["contactName"] = v => v.ContactName,
+                ["contactEmail"] = v => v.ContactEmail,
+                ["contactPhone"] = v => v.ContactPhone,
+                ["id"] = v => v.Id
+            };
+
+            query.ApplyOrdering(filter, sortQuery);
 
             return await query.ToListAsync();
         }

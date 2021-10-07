@@ -8,6 +8,7 @@ namespace AspNetCoreAngular_EF5.Controllers.Resources
         public int Id { get; set; }
         public string Name { get; set; }
         public ICollection<ModelResource> Models { get; set; }
+
         public MakeResource()
         {
             Models = new Collection<ModelResource>();

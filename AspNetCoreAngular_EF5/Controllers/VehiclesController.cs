@@ -39,7 +39,6 @@ namespace AspNetCoreAngular_EF5.Controllers
             return Ok(result);
         }
 
-
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateVehicle(int id, [FromBody] SaveVehicleResource vehicleResource)
         {
@@ -89,9 +88,9 @@ namespace AspNetCoreAngular_EF5.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<VehicleResource>> GetVehicles(FilterResource filterResource)
+        public async Task<IEnumerable<VehicleResource>> GetVehicles(VehicleQueryResource filterResource)
         {
-            var filter = _mapper.Map<FilterResource, Filter>(filterResource);
+            var filter = _mapper.Map<VehicleQueryResource, VehicleQuery>(filterResource);
 
             var vehicles = await this._vehicleRepository.GetVehicles(filter);
 

@@ -8,9 +8,9 @@ namespace AspNetCoreAngular_EF5.Persistence
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Make> Makes { get; set; }
         public DbSet<Feature> Features { get; set; }
+
         public NewDbContext(DbContextOptions<NewDbContext> options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
